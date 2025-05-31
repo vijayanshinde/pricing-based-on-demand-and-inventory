@@ -1,0 +1,167 @@
+# gpu_pricing_primal_dual.py
+
+import numpy as np
+from scipy.optimize import minimize_scalar
+from math import log
+
+#Simulates customer behavior using a known demand function D(p).
+   ## This class is used by both the learner (unknown) and oracle (known).
+class DemandSimulator:
+    
+    def __init__(self, demand_curve):
+        self.demand_curve = demand_curve  # A dict like {price: probability}
+
+    def simulate_purchase(self, price):
+        return 1 if np.random.rand() < self.demand_curve.get(price, 0.0) else 0
+
+
+
+#Handles a single phase of the learning algorithm, e.g., exploration.
+class Phase:
+    def __init__(self, simulator, price_grid, num_customers, inventory):
+        self.simulator = simulator
+        self.price_grid = price_grid
+        self.num_customers = num_customers
+        self.inventory = inventory
+        self.sales_data = {p: [] for p in price_grid}
+        self.revenue = 0
+        self.inventory_used = 0
+
+    def run_random_pricing(self):
+        for _ in range(self.num_customers):
+            if self.inventory_used >= self.inventory:
+                break
+            price = np.random.choice(self.price_grid)
+            buy = self.simulator.simulate_purchase(price)
+            self.sales_data[price].append(buy)
+            if buy:
+                self.revenue += price
+                self.inventory_used += 1
+        return self.sales_data, self.revenue, self.inventory_used
+
+
+
+#Estimates the demand curve \hat{D}(p) from binary outcomes.
+class DemandEstimator:
+    
+    @staticmethod
+    def estimate(sales_data):
+        estimated_demand = {}
+        for price, results in sales_data.items():
+            estimated_demand[price] = np.mean(results) if results else 0.0
+        return estimated_demand
+
+
+
+#Finds the optimal dual variable z* by solving the dual problem.
+class DualVariableOptimizer:
+
+    def __init__(self, estimated_demand, price_grid, inventory, total_time):
+        self.estimated_demand = estimated_demand
+        self.price_grid = price_grid
+        self.c = inventory
+        self.T = total_time
+        self.rho = self.c / self.T
+
+    def objective(self, z):
+        max_term = max([(p - z) * self.estimated_demand[p] for p in self.price_grid])
+        return -max_term + z * self.rho * self.T
+
+    def solve(self):
+        result = minimize_scalar(self.objective, bounds=(0, max(self.price_grid)), method='bounded')
+        return result.x
+
+
+
+#### Simulates the oracle's pricing using true demand to maximize p * D(p)
+class Oracle:
+    
+    def __init__(self, true_demand, price_grid, inventory, T):
+        self.true_demand = true_demand
+        self.price_grid = price_grid
+        self.inventory = inventory
+        self.T = T
+
+    def run(self):
+        simulator = DemandSimulator(self.true_demand)
+        revenue = 0
+        used_inventory = 0
+        for _ in range(self.T):
+            if used_inventory >= self.inventory:
+                break
+            best_price = max(self.price_grid, key=lambda p: p * self.true_demand[p])
+            if simulator.simulate_purchase(best_price):
+                revenue += best_price
+                used_inventory += 1
+        return revenue
+
+
+#Orchestrates the full exploration + dual variable optimization + oracle regret computation
+class PricingExperiment:
+    def __init__(self, price_grid, inventory, T, num_phases, phase_size, true_demand):
+        self.price_grid = price_grid
+        self.inventory = inventory
+        self.T = T
+        self.num_phases = num_phases
+        self.phase_size = phase_size
+        self.true_demand = true_demand
+
+    def run(self):
+        total_data = {p: [] for p in self.price_grid}
+        total_revenue = 0
+        total_used = 0
+
+        # Run exploration for first few phases
+        for phase_id in range(self.num_phases):
+            sim = DemandSimulator(self.true_demand)
+            phase = Phase(sim, self.price_grid, self.phase_size, self.inventory - total_used)
+            phase_data, revenue, used = phase.run_random_pricing()
+            for p in self.price_grid:
+                total_data[p].extend(phase_data[p])
+            total_revenue += revenue
+            total_used += used
+
+        # Estimate demand
+        est_demand = DemandEstimator.estimate(total_data)
+
+        # Dual optimization
+        dual_solver = DualVariableOptimizer(est_demand, self.price_grid, self.inventory, self.T)
+        z_star = dual_solver.solve()
+
+        # Oracle revenue
+        oracle = Oracle(self.true_demand, self.price_grid, self.inventory, self.T)
+        oracle_revenue = oracle.run()
+        regret = oracle_revenue - total_revenue
+
+        # Output summary
+        return {
+            'estimated_demand': est_demand,
+            'z_star': z_star,
+            'revenue': total_revenue,
+            'oracle_revenue': oracle_revenue,
+            'regret': regret,
+            'inventory_used': total_used
+        }
+
+
+if __name__ == "__main__":
+    # Configuration
+    price_grid = [30,40,50]
+    true_demand = {30: 0.9, 40: 0.7, 50: 0.4}  
+    inventory = 40
+    T = 40
+    num_phases = 8
+    phase_size = 5
+
+    experiment = PricingExperiment(price_grid, inventory, T, num_phases, phase_size, true_demand)
+    results = experiment.run()
+
+    # Display results
+    print("\nExploration Results:")
+    print("--------------------")
+    print(f"Estimated demand: {results['estimated_demand']}")
+    print(f"Dual variable z*: {results['z_star']:.2f}")
+    print(f"Revenue: ${results['revenue']:.2f}")
+    print(f"Oracle revenue: ${results['oracle_revenue']:.2f}")
+    print(f"Regret: ${results['regret']:.2f}")
+    print(f"Inventory used: {results['inventory_used']} / {inventory}")
