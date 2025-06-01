@@ -7,7 +7,7 @@ This is an ongoing project with a telecom comapny and the work shown is in progr
 Since, the industry comes into B2C business model, the product pricing is very competitive such that they need to offer optimal prices which will create balanced demand with respect to achieving maximum revenue and correctly valuing the inventory. This becomes a primal dual problem which can be solved using Primal dual algorithm. We also consider 2 customer types: reserved and pre-emptive. Reserved is willing to pay more as they have confirmed reserve hardware after booking. The pre-emptive one is uncertain if they will get the hardware and can be refunded back. 
 
 
-We refer to a research paper titled as: A Primal-dual Learning Algorithm for Personalized Dynamic Pricing with an Inventory Constraint by Ningyuan Chen and Guillermo Gallego (1812.09234).
+We refer to a research paper titled as: A Primal-dual Learning Algorithm for Personalized Dynamic Pricing with an Inventory Constraint by Ningyuan Chen and Guillermo Gallego (https://arxiv.org/pdf/1812.09234). The paper is also attached with other files in this reposiotory named as: Pimal Dual Algorithm - Main Paper compressed.pdf  
 This paper basically follows a primal dual algorithm which solves our problem and achieves a near to optimal price at the ending of booking phase of hardware using dynamic pricing. 
 
 
