@@ -1,8 +1,0 @@
-Exploration Results:
---------------------
-Estimated demand: {30: 0.7368421052631579, 40: 0.5833333333333334, 50: 0.2222222222222222}
-Dual variable z*: 0.00
-Revenue: $800.00
-Oracle revenue: $1320.00
-Regret: $520.00
-Inventory used: 23 / 40
