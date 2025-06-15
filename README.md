@@ -16,7 +16,7 @@ The algorithm is divided into two parts: Exploration and Exploitation which in p
 Currently we are developing in phase 1 i.e. exploration. Here, we found that there are different methods to simulate demand and we are trying out different methods. Demand simulation becomes important as if we have good demand then our algorithm mis re4ally working well or if demand simulation is not good then we may go into fake assumption that algorithm is running well and cause problem in future while taking real trials.
 
 
-I have shared the code (code.ipynb) which shows Phase 1: exploration, where we simulate demand, throw experimental prices with higher and lower bound, calculate dual variable which values inventory and then calculate optimal price which should be above dual variable value.
+I have shared the code (final_2.ipynb) which shows Phase 1: exploration, where we simulate demand, throw experimental prices with higher and lower bound, calculate dual variable which values inventory and then calculate optimal price which should be above dual variable value.
 The code shows dual variable value as 0, which is wrong and we are currently working on also with trying different demand functions used to simulate demand.
 Once we finish exploration phase we move to exploitation, 
 Then we check the performance of complete model and make changes accordingly.
