@@ -1,23 +1,41 @@
-# Dynamic-Pricing-based-on-Demand-Curves
-Dynamic Pricing by learning Demand Curves with Inventory constraint
+## Dynamic Pricing Based on Demand Curves (Exploration Phase Completed)
 
-This is an ongoing project with a telecom comapany and the work shown is in progress. In telecom industries, the GPUs or high-speed computing hardware is used to optimize their 4g, 5g, 6g networks. But when network is not utilized at their full extent by users or customers which is at non-peak hours for e.g. in night (midnight to 5 am), this computing hardware is almost ideal which is waste of very useful resources. Hence, it is being strategized by the company that they can rent this hardware resources to other clients who need such computing hardware which can contribute as new income to the revenue. 
+This project implements dynamic pricing under inventory constraints by learning demand curves, specifically tailored to a telecom setting where unused GPU hardware during off-peak hours (e.g., midnight to 5 AM) is rented out to external clients. This monetizes idle infrastructure and contributes to new revenue streams.
+
+### Problem Context:
+
+Telecom companies operate under a B2C model where pricing must balance competitive market conditions and optimal inventory utilization. We treat this as a **primal-dual optimization problem**, considering **two customer types**:
+
+* **Reserved**: Pays more and has guaranteed allocation.
+* **Pre-emptive**: Pays less but may lose access if capacity runs out.
+
+The solution approach is based on the paper:
+📄 *“A Primal-Dual Learning Algorithm for Personalized Dynamic Pricing with an Inventory Constraint”* by Ningyuan Chen and Guillermo Gallego
+→ [Link to paper](https://arxiv.org/pdf/1812.09234)
+→ Also available in this repository as:
+**`Pimal Dual Algorithm - Main Paper compressed.pdf`**
+
+---
+
+###  Phase 1: Exploration (Completed)
+
+The **exploration phase** of the algorithm is implemented and demonstrated in the Jupyter Notebook:
+📁 **`exploration_2_cust_type.ipynb`**
+
+In this notebook:
+
+* Demand is simulated for both **reserved** and **pre-emptive** customer types.
+* A range of experimental prices is tested (using upper and lower bounds).
+* **Demand observations** are collected at each price point.
+* The **dual variable** (shadow price of inventory) is estimated based on observed demand.
+* The **optimal price** for each customer type is computed such that it exceeds the dual value.
 
 
-Since, the industry comes into B2C business model, the product pricing is very competitive such that they need to offer optimal prices which will create balanced demand with respect to achieving maximum revenue and correctly valuing the inventory. This becomes a primal dual problem which can be solved using Primal dual algorithm. We also consider 2 customer types: reserved and pre-emptive. Reserved is willing to pay more as they have confirmed reserve hardware after booking. The pre-emptive one is uncertain if they will get the hardware and can be refunded back. 
+---
 
+### Next Steps:
 
-We refer to a research paper titled as: A Primal-dual Learning Algorithm for Personalized Dynamic Pricing with an Inventory Constraint by Ningyuan Chen and Guillermo Gallego (https://arxiv.org/pdf/1812.09234). The paper is also attached with other files in this reposiotory named as: Pimal Dual Algorithm - Main Paper compressed.pdf  
-This paper basically follows a primal dual algorithm which solves our problem and achieves a near to optimal price at the ending of booking phase of hardware using dynamic pricing. 
+After exploration, the next stage is **Phase 2: Exploitation**, where the learned prices are used to allocate inventory and generate revenue. Model performance will be evaluated end-to-end, and iterations will follow as needed.
 
-
-The algorithm is divided into two parts: Exploration and Exploitation which in phase 1 experiments prices and studies real time demand on which temporary optimal price is obtained. Taking that optimal price to second phase we estimate future demand by price and demand relation and compare that to inventory after which we understand if we have enough inventory for current temporary optimal price. If demand is below inventory then we keep prices same, but if demand is more than inventory then we need to increase the prices.
-
-Currently we are developing in phase 1 i.e. exploration. Here, we found that there are different methods to simulate demand and we are trying out different methods. Demand simulation becomes important as if we have good demand then our algorithm mis re4ally working well or if demand simulation is not good then we may go into fake assumption that algorithm is running well and cause problem in future while taking real trials.
-
-
-I have shared the code (exploration_2_cust_type.ipynb) which shows Phase 1: exploration, where we simulate demand, throw experimental prices with higher and lower bound, calculate dual variable which values inventory and then calculate optimal price which should be above dual variable value.
-The code shows dual variable value as 0, which is wrong and we are currently working on also with trying different demand functions used to simulate demand.
-Once we finish exploration phase we move to exploitation, 
-Then we check the performance of complete model and make changes accordingly.
+---
 
