@@ -13,7 +13,7 @@ The solution approach is based on the paper:
 📄 *“A Primal-Dual Learning Algorithm for Personalized Dynamic Pricing with an Inventory Constraint”* by Ningyuan Chen and Guillermo Gallego
 → [Link to paper](https://arxiv.org/pdf/1812.09234)
 → Also available in this repository as:
-**`Pimal Dual Algorithm - Main Paper compressed.pdf`**
+**`Main paper - Pimal dual learning algorithm-compressed.pdf`**
 
 ---
 
