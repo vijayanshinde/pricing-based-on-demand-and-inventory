@@ -98,7 +98,7 @@ This project addresses the challenge using a **Primal-Dual optimization framewor
 1. Clone this repository
 
    ```bash
-   git clone https://github.com/<your-username>/primal-dual-pricing.git
+   git clone https://github.com/vijayanshinde/primal-dual-pricing.git
    cd primal-dual-pricing
    ```
 2. Install dependencies
