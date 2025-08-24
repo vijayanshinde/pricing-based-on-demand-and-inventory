@@ -4,7 +4,7 @@
 
 # Primal-Dual Learning Algorithm for Personalized Dynamic Pricing
 
-This repository, **`pricing-based-on-demand-curves-inventory`**, contains a complete implementation of the *Primal-Dual Learning Algorithm for Personalized Dynamic Pricing with Inventory Constraints*, based on the research paper by Ningyuan Chen and Guillermo Gallego. The project combines **machine learning, optimization, and dynamic pricing** to solve a real-world challenge: maximizing revenue under limited inventory while serving different customer types.
+This repository, **`pricing-based-on-demand-and-inventory`**, contains a complete implementation of the *Primal-Dual Learning Algorithm for Personalized Dynamic Pricing with Inventory Constraints*, based on the research paper by Ningyuan Chen and Guillermo Gallego. The project combines **machine learning, optimization, and dynamic pricing** to solve a real-world challenge: maximizing revenue under limited inventory while serving different customer types.
 
 ---
 
@@ -90,8 +90,8 @@ This project addresses the challenge using a **Primal-Dual optimization framewor
 1. Clone this repository:
 
    ```bash
-   git clone https://github.com/vijayanshinde/pricing-based-on-demand-curves-inventory.git
-   cd pricing-based-on-demand-curves-inventory
+   git clone https://github.com/vijayanshinde/pricing-based-on-demand-and-inventory.git
+   cd pricing-based-on-demand-and-inventory
    ```
 
 2. Install dependencies:
