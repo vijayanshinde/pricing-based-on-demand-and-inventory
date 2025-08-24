@@ -109,7 +109,7 @@ This project addresses the challenge using a **Primal-Dual optimization framewor
 3. Run the notebook
 
    ```bash
-   jupyter notebook primal_dual_algo.ipynb
+   jupyter notebook primal_dual_algo_GK-VS_.ipynb
    ```
 4. (Optional) Run automated demo
 
